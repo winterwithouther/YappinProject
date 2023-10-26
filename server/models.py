@@ -21,3 +21,9 @@ class Comment(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key = True)
     content = db.Column(db.String)
+
+class Like(db.Model, SerializerMixin):
+    __tablename__ = "likes"
+
+    id = db.Column(db.Integer, primary_key = True)
+    
