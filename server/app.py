@@ -14,9 +14,23 @@ from models import *
 
 class Posts(Resource):
     def get(self):
-        posts = [post.to_dict() for post in Post.query.all()]
+        posts = [post.to_dict(rules=("-comments", "-likes",)) for post in Post.query.all()]
         return make_response(posts, 200)
     
+    def post(self):
+        try:
+            new_post = Post(
+                content = request.json["content"],
+                caption = request.json["caption"]
+            )
+
+            db.session.add(new_post)
+            db.session.commit()
+
+            return make_response(new_post.to_dict(), 201)
+        except:
+            return make_response({"error" : ["validation errors"]}, 404)
+
 api.add_resource(Posts, "/posts")
 
 @app.route('/')
