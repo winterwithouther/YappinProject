@@ -22,6 +22,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String, unique = True)
 
     comments = db.relationship("Comment", backref="user", cascade="all, delete-orphan")
+    likes = db.relationship("Like", backref="user", cascade="all, delete-orphan")
 
 class Comment(db.Model, SerializerMixin):
     __tablename__ = "comments"
