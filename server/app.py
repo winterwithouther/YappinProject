@@ -145,6 +145,17 @@ class Comments(Resource):
     
 api.add_resource(Comments, "/comments")
 
+class CommentsById(Resource):
+    def get(self, id):
+        comment = Comment.query.filter_by(id = id).one_or_none()
+
+        if comment is None:
+            return make_response({"error" : "Comment does not exist"}, 404)
+        
+        return make_response(comment.to_dict(rules=("-user", "-post",)), 200)
+
+api.add_resource(CommentsById, "/comments/<int:id>")
+
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
