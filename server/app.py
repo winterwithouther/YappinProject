@@ -103,6 +103,24 @@ class UsersById(Resource):
         
         return make_response(user.to_dict(rules=("-comments", "-likes",)), 200)
 
+    def patch(self, id):
+        try:
+            user = User.query.filter_by(id = id).one_or_none()
+
+            if user is None:
+                return make_response({"error" : "User does not exist"}, 404)
+            
+            request_json = request.get_json()
+
+            setattr(user, "username", request_json["username"])
+
+            db.session.add(user)
+            db.session.commit()
+
+            return make_response({}, 200)
+        except:
+            return make_response({"error" : "PATCH UserById"}, 404)
+
 api.add_resource(UsersById, "/users/<int:id>")
 
 @app.route('/')
