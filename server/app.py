@@ -74,6 +74,12 @@ class PostsById(Resource):
 
 api.add_resource(PostsById, "/posts/<int:id>")
 
+class Users(Resource):
+    def get(self):
+        users = [user.to_dict(rules=("-comments", "-likes",)) for user in User.query.all()]
+        return make_response(users, 200)
+    
+api.add_resource(Users, "/users")
 
 @app.route('/')
 def index():
