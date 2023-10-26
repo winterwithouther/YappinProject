@@ -173,6 +173,17 @@ class CommentsById(Resource):
         except:
             return make_response({"error" : "PATCH CommentsById"}, 404)
         
+    def delete(self, id):
+        comment = Comment.query.filter_by(id = id).one_or_none()
+
+        if comment is None:
+            return make_response({"error" : "Comment does not exist"}, 404)
+
+        db.session.delete(comment)
+        db.session.commit()
+
+        return make_response({}, 202)
+
 api.add_resource(CommentsById, "/comments/<int:id>")
 
 @app.route('/')
