@@ -44,4 +44,4 @@
 # Wireframe and Relationship Diagram
 
 <img src="./images/NEWYAPPINRELATIONSHIP.PNG" alt="Relationship Diagram">
-<img src="./images/YAPPINWIREFRAME.PNG.PNG" alt="Wireframe Diagram">
+<img src="./images/YAPPINWIREFRAME.PNG" alt="Wireframe Diagram">
