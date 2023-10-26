@@ -94,6 +94,17 @@ class Users(Resource):
 
 api.add_resource(Users, "/users")
 
+class UsersById(Resource):
+    def get(self, id):
+        user = User.query.filter_by(id = id).one_or_none()
+        
+        if user is None:
+            return make_response({"error" : "User does not exist"}, 404)
+        
+        return make_response(user.to_dict(rules=("-comments", "-likes",)), 200)
+
+api.add_resource(UsersById, "/users/<int:id>")
+
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
