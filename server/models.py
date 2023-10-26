@@ -15,12 +15,13 @@ class Post(db.Model, SerializerMixin):
 
     serialize_rules = ("-comments.post", "-likes.post",)
     
-
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique = True)
+
+    comments = db.relationship("Comment", backref="user", cascade="all, delete-orphan")
 
 class Comment(db.Model, SerializerMixin):
     __tablename__ = "comments"
