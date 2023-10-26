@@ -123,6 +123,13 @@ class UsersById(Resource):
 
 api.add_resource(UsersById, "/users/<int:id>")
 
+class Comments(Resource):
+    def get(self):
+        comments = [comment.to_dict(rules=("-user", "-post",)) for comment in Comment.query.all()]
+        return make_response(comments, 200)
+    
+api.add_resource(Comments, "/comments")
+
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
