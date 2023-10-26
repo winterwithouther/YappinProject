@@ -186,6 +186,13 @@ class CommentsById(Resource):
 
 api.add_resource(CommentsById, "/comments/<int:id>")
 
+class Likes(Resource):
+    def get(self):
+        likes = [like.to_dict(rules=("-post", "-user",)) for like in Like.query.all()]
+        return make_response(likes, 200)
+
+api.add_resource(Likes, "/likes")
+
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
