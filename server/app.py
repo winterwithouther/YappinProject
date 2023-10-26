@@ -3,15 +3,21 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request
+from flask import Flask, request, make_response, abort, session, jsonify
 from flask_restful import Resource
 
 # Local imports
 from config import app, db, api
 # Add your model imports
 
+from models import *
 
-# Views go here!
+class Posts(Resource):
+    def get(self):
+        posts = [post.to_dict() for post in Post.query.all()]
+        return make_response(posts, 200)
+    
+api.add_resource(Posts, "/posts")
 
 @app.route('/')
 def index():
