@@ -117,7 +117,7 @@ class UsersById(Resource):
             db.session.add(user)
             db.session.commit()
 
-            return make_response({}, 200)
+            return make_response(user.to_dict(), 200)
         except:
             return make_response({"error" : "PATCH UserById"}, 404)
 
@@ -154,6 +154,25 @@ class CommentsById(Resource):
         
         return make_response(comment.to_dict(rules=("-user", "-post",)), 200)
 
+    def patch(self, id):
+        try:
+            comment = Comment.query.filter_by(id = id).one_or_none()
+
+            if comment is None:
+                return make_response({"error" : "Comment does not eixst"}, 404)
+
+            request_json = request.get_json()
+
+            for key in request_json:
+                setattr(comment, key, request_json[key])
+
+            db.session.add(comment)
+            db.session.commit()
+
+            return make_response(comment.to_dict(), 200)
+        except:
+            return make_response({"error" : "PATCH CommentsById"}, 404)
+        
 api.add_resource(CommentsById, "/comments/<int:id>")
 
 @app.route('/')
