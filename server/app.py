@@ -42,6 +42,35 @@ class PostsById(Resource):
         
         return make_response(post.to_dict(rules=("-comments", "-likes",)), 200)
 
+    def patch(self, id):
+        try:
+            post = Post.query.filter_by(id = id).one_or_none()
+
+            if post is None:
+                return make_response({"error" : "Post does not exist"}, 404)
+            
+            request_json = request.get_json()
+
+            for key in request_json:
+                setattr(post, key, request_json[key])
+
+            db.session.add(post)
+            db.session.commit()
+
+            return make_response(post.to_dict(), 200)
+        except:
+            return make_response({"error" : "PATCH UserById"}, 404)
+
+    def delete(self, id):
+        post = Post.query.filter_by(id = id).one_or_none()
+
+        if post is None:
+            return make_response({"error" : "Post does not exist"}, 404)
+        
+        db.session.delete(post)
+        db.session.commit()
+
+        return make_response({}, 202)
 
 api.add_resource(PostsById, "/posts/<int:id>")
 
