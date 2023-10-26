@@ -11,6 +11,8 @@ class Post(db.Model, SerializerMixin):
     caption = db.Column(db.String)
 
     comments = db.relationship("Comment", backref="post", cascade="all, delete-orphan")
+    likes = db.relationship("Like", backref="post", cascade="all, delete-orphan")
+    
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
