@@ -128,6 +128,21 @@ class Comments(Resource):
         comments = [comment.to_dict(rules=("-user", "-post",)) for comment in Comment.query.all()]
         return make_response(comments, 200)
     
+    def post(self):
+        try:
+            new_comment = Comment(
+                content = request.json["content"],
+                user_id = request.json["user_id"],
+                post_id = request.json["post_id"]
+            )
+
+            db.session.add(new_comment)
+            db.session.commit()
+
+            return make_response(new_comment.to_dict(), 201)
+        except:
+            return make_response({"error" : "POST Comments"}, 404)
+    
 api.add_resource(Comments, "/comments")
 
 @app.route('/')
