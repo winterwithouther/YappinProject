@@ -216,6 +216,17 @@ class LikesById(Resource):
         
         return make_response(like.to_dict(rules=("-user", "-post",)), 200)
 
+    def delete(self, id):
+        like = Like.query.filter_by(id = id).one_or_none()
+
+        if like is None:
+            return make_response({"error" : "Like does not exist"}, 404)
+        
+        db.session.delete(like)
+        db.session.commit()
+
+        return make_response({}, 202)
+
 api.add_resource(LikesById, "/likes/<int:id>")
 
 @app.route('/')
