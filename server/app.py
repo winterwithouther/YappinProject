@@ -190,6 +190,20 @@ class Likes(Resource):
     def get(self):
         likes = [like.to_dict(rules=("-post", "-user",)) for like in Like.query.all()]
         return make_response(likes, 200)
+    
+    def post(self):
+        try:
+            new_like = Like(
+                user_id = request.json["user_id"],
+                post_id = request.json["post_id"]
+            )
+
+            db.session.add(new_like)
+            db.session.commit()
+
+            return make_response({}, 200)
+        except:
+            return make_response({"error" : "POST Likes"}, 404)
 
 api.add_resource(Likes, "/likes")
 
