@@ -79,6 +79,19 @@ class Users(Resource):
         users = [user.to_dict(rules=("-comments", "-likes",)) for user in User.query.all()]
         return make_response(users, 200)
     
+    def post(self):
+        try:
+            new_user = User(
+                username = request.json["username"]
+            )
+
+            db.session.add(new_user)
+            db.session.commit()
+
+            return make_response(new_user.to_dict(), 200)
+        except:
+            return make_response({"error" : "POST UserById"}, 404)
+
 api.add_resource(Users, "/users")
 
 @app.route('/')
