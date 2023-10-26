@@ -44,4 +44,6 @@ class Like(db.Model, SerializerMixin):
 
     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    serialize_rules = ("-post.comments", "-post.likes",)
     
