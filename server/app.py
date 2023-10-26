@@ -33,6 +33,19 @@ class Posts(Resource):
 
 api.add_resource(Posts, "/posts")
 
+class PostsById(Resource):
+    def get(self, id):
+        post = Post.query.filter_by(id = id).one_or_none()
+
+        if post is None:
+            return make_response({"error" : "Post does not exist"}, 404)
+        
+        return make_response(post.to_dict(rules=("-comments", "-likes",)), 200)
+
+
+api.add_resource(PostsById, "/posts/<int:id>")
+
+
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
