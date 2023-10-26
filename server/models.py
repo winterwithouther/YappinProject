@@ -24,6 +24,8 @@ class User(db.Model, SerializerMixin):
     comments = db.relationship("Comment", backref="user", cascade="all, delete-orphan")
     likes = db.relationship("Like", backref="user", cascade="all, delete-orphan")
 
+    serialize_rules = ("-comments.user", "-likes.user",)
+
 class Comment(db.Model, SerializerMixin):
     __tablename__ = "comments"
 
