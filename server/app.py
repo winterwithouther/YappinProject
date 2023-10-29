@@ -96,27 +96,21 @@ api.add_resource(Users, "/users")
 
 class UsersById(Resource):
     def get(self, id):
-        user = User.query.filter_by(id = id).one_or_none()
-        
+        user = User.query.filter_by(id = id).one_or_none()        
         if user is None:
             return make_response({"error" : "User does not exist"}, 404)
-        
         return make_response(user.to_dict(rules=("-comments", "-likes",)), 200)
 
     def patch(self, id):
         try:
             user = User.query.filter_by(id = id).one_or_none()
-
             if user is None:
                 return make_response({"error" : "User does not exist"}, 404)
-            
             request_json = request.get_json()
-
-            setattr(user, "username", request_json["username"])
-
+            for key in request_json:
+                setattr(user, key, request_json[key])
             db.session.add(user)
             db.session.commit()
-
             return make_response(user.to_dict(), 200)
         except:
             return make_response({"error" : "PATCH UserById"}, 404)
@@ -228,6 +222,78 @@ class LikesById(Resource):
         return make_response({}, 202)
 
 api.add_resource(LikesById, "/likes/<int:id>")
+
+class Signup(Resource):
+    def post(self):
+        request_json = request.get_json()
+
+        username = request_json.get("username")
+        password = request_json.get("password")
+        image_url = request_json.get("image_url")
+        bio = request_json.get("bio")
+        email = request_json.get("email")
+
+        user = User(
+            username = username,
+            image_url = image_url,
+            email = email
+        )
+
+        user.password_hash = password
+
+        try:
+
+            db.session.add(user)
+            db.session.commit()
+
+            session["user_id"] = user.id
+
+            return make_response(user.to_dict()), 201
+        
+        except:
+            return make_response({"error" : "422 Unproccessable Entity"}, 422)
+        
+api.add_resource(Signup, "/signup", endpoint="signup")
+
+class CheckSession(Resource):
+    def get(self):
+        user_id = session["user_id"]
+
+        if user_id:
+            user = User.query.filter(User.id == user_id).first()
+
+            return make_response(user.to_dict(), 200)
+        
+        return make_response({}, 401)
+    
+api.add_resource(CheckSession, "/checksession", endpoint="check_session")
+
+class Login(Resource):
+    def post(self):
+
+        request_json = request.get_json()
+
+        username = request_json.get("username")
+        password = request_json.get("password")
+
+        user = User.query.filter(User.username == username).first()
+
+        if user:
+            if user.authenticate(password):
+
+                session["user_id"] = user.id
+                return make_response(user.to_dict(), 200)
+            
+            return make_response({"error" : "401 Unauthorized"}, 401)
+        
+api.add_resource(Login, "/login", endpoint="login")
+
+class Logout(Resource):
+    def delete(self):
+        session["user_id"] = None
+        return make_response({}, 204)
+    
+api.add_resource(Logout, "/logout", endpoint="logout")
 
 @app.route('/')
 def index():
