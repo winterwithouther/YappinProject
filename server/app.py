@@ -12,6 +12,8 @@ from config import app, db, api
 
 from models import *
 
+app.secret_key = b'\x00q\x7fe\xe0\xafI5{\xa044Wdc\xd2'
+
 class Posts(Resource):
     def get(self):
         posts = [post.to_dict(rules=("-comments", "-likes",)) for post in Post.query.all()]
@@ -80,17 +82,16 @@ class Users(Resource):
         return make_response(users, 200)
     
     def post(self):
-        try:
-            new_user = User(
-                username = request.json["username"]
-            )
+        
+        new_user = User(
+            username = request.json["username"]
+        )
 
-            db.session.add(new_user)
-            db.session.commit()
+        db.session.add(new_user)
+        db.session.commit()
 
-            return make_response(new_user.to_dict(), 200)
-        except:
-            return make_response({"error" : "POST UserById"}, 404)
+        return make_response(new_user.to_dict(), 200)
+    
 
 api.add_resource(Users, "/users")
 
@@ -230,28 +231,24 @@ class Signup(Resource):
         username = request_json.get("username")
         password = request_json.get("password")
         image_url = request_json.get("image_url")
-        bio = request_json.get("bio")
         email = request_json.get("email")
 
         user = User(
             username = username,
             image_url = image_url,
-            email = email
+            email = email,
+            bio=None
         )
 
         user.password_hash = password
 
-        try:
+        db.session.add(user)
+        db.session.commit()
 
-            db.session.add(user)
-            db.session.commit()
+        session["user_id"] = user.id
 
-            session["user_id"] = user.id
+        return make_response(user.to_dict(), 201)
 
-            return make_response(user.to_dict()), 201
-        
-        except:
-            return make_response({"error" : "422 Unproccessable Entity"}, 422)
         
 api.add_resource(Signup, "/signup", endpoint="signup")
 
