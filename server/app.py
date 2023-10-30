@@ -230,12 +230,11 @@ class Signup(Resource):
 
         username = request_json.get("username")
         password = request_json.get("password")
-        image_url = request_json.get("image_url")
         email = request_json.get("email")
 
         user = User(
             username = username,
-            image_url = image_url,
+            image_url = None,
             email = email,
             bio=None
         )
