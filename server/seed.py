@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Post, User, Comment, Like
+from models import db, Post, User, Comment, Like, UserPost
 
 if __name__ == '__main__':
     fake = Faker()
@@ -24,6 +24,7 @@ if __name__ == '__main__':
         
         user1 = User(username = "Ava")
         post1 = Post(content = img, caption = "Here is my Dog!")
+        userPost1 = UserPost(post_id = 1, user_id = 1)
 
         comment1 = Comment(content = "Cool dog!", user_id = 1, post_id = 1)
         like1 = Like(user_id = 1, post_id = 1)
@@ -31,6 +32,7 @@ if __name__ == '__main__':
         db.session.add(user1)
         db.session.add(post1)
         db.session.add(comment1)
+        db.session.add(userPost1)
         db.session.add(like1)
 
         db.session.commit()
