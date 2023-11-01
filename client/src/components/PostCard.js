@@ -92,6 +92,7 @@ function PostCard({caption, content, comments, user, id, likes}) {
         .then(response => response.json())
         .then(data => {
             setComments([...comments2, data])
+            setCreateComment("")
             setCommenting(false)
             console.log(comments2)
         })
@@ -112,7 +113,7 @@ function PostCard({caption, content, comments, user, id, likes}) {
         <h4>USERNAME : {caption}</h4>
         {commenting ? 
         <form onSubmit={handleSubmitCreateComment}>
-            <input name="create-comment" type="text" value={createComment} onChange={handleChangeCreateComment}></input>
+            <input placeholder="Comment..." name="create-comment" type="text" value={createComment} onChange={handleChangeCreateComment}></input>
             <input type="submit" value="comment"></input>
             <button onClick={handleClickCancel}>cancel</button>
         </form> : <button onClick={handleClickComment}>Comment</button>}

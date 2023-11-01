@@ -243,6 +243,39 @@ class UserPosts(Resource):
 
 api.add_resource(UserPosts, "/userposts")
 
+class UserPostsById(Resource):
+    def delete(self, id):
+        userPost = UserPost.query.filter_by(id = id).one_or_none()
+
+        if userPost is None:
+            return make_response({"error" : "User post does not exist"}, 404)
+        
+        db.session.delete(userPost)
+        db.session.commit()
+
+        return make_response({}, 204)
+
+    def patch(self, id):
+        try:
+            userPost = UserPost.query.filter_by(id = id).one_or_none()
+
+            if userPost is None:
+                return make_response({"error" : "UserPost does not exist"}, 404)
+
+            request_json = request.get_json()
+
+            for key in request_json:
+                setattr(userPost, key, request_json[key])
+
+            db.session.add(userPost)
+            db.session.commit()
+
+            return make_response(userPost.to_dict(), 200)
+        except:
+            return make_response({"error" : ["validation errors"]}, 404)
+ 
+api.add_resource(UserPostsById, "/userposts/<int:id>")
+
 class Signup(Resource):
     def post(self):
         request_json = request.get_json()
