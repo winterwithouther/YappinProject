@@ -224,6 +224,25 @@ class LikesById(Resource):
 
 api.add_resource(LikesById, "/likes/<int:id>")
 
+class UserPosts(Resource):
+    def post(self):
+        try:
+            request_json = request.get_json()
+
+            newUserPost = UserPost(
+                post_id = request_json["post_id"],
+                user_id = request_json["user_id"]
+            )
+
+            db.session.add(newUserPost)
+            db.session.commit()
+
+            return make_response(newUserPost.to_dict(), 200)
+        except:
+            return make_response({"error" : "POST UserPost"}, 404)
+
+api.add_resource(UserPosts, "/userposts")
+
 class Signup(Resource):
     def post(self):
         request_json = request.get_json()
