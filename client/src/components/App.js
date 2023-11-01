@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
     // auto-login
-    fetch("/check_session")
+    fetch("/checksession")
     .then((r) => {
       if (r.ok) {
         r.json().then((user) => setUser(user))
@@ -22,18 +22,24 @@ function App() {
     })
   }, [])
 
+  function onLogin(newUser) {
+    setUser(newUser)
+  }
+
+  console.log(user)
+
   return <div>
     <Router>
-      <Header/>
+      <Header onLogin={onLogin}/>
       <Switch>
         <Route exact path="/">
-          <Home/>
+          <Home user={user}/>
         </Route>
         <Route exact path="/login">
-          <Login/>
+          <Login onLogin={onLogin}/>
         </Route>
         <Route exact path="/signup">
-          <Signup/>
+          <Signup onLogin={onLogin}/>
         </Route>
         <Route exact path="/profile">
           <Profile/>

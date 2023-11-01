@@ -1,7 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 import { Link } from "react-router-dom"
 
-function Header() {
+function Header({onLogin}) {
+    const [isLoading, setIsLoading] = useState(false);
+    function handleLogout() {
+        setIsLoading(true)
+        fetch("/logout", {
+            method : "DELETE"
+        })
+        .then((r) => {
+            setIsLoading(false)
+            if (r.ok) {
+                onLogin(null)
+            }
+        })
+    }
+    
     return <div>
         <Link to="/">
             Home
@@ -21,6 +35,9 @@ function Header() {
         <Link to="/profile">
             Profile
         </Link>
+        <button onClick={handleLogout}>
+            {isLoading ? "Loading..." : "Logout"}
+        </button>
     </div>
 }
 

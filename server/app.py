@@ -16,7 +16,7 @@ app.secret_key = b'\x00q\x7fe\xe0\xafI5{\xa044Wdc\xd2'
 
 class Posts(Resource):
     def get(self):
-        posts = [post.to_dict(rules=("-comments", "-likes",)) for post in Post.query.all()]
+        posts = [post.to_dict() for post in Post.query.all()]
         return make_response(posts, 200)
     
     def post(self):
@@ -196,7 +196,7 @@ class Likes(Resource):
             db.session.add(new_like)
             db.session.commit()
 
-            return make_response({}, 200)
+            return make_response(new_like.to_dict(), 200)
         except:
             return make_response({"error" : "POST Likes"}, 404)
 

@@ -14,7 +14,7 @@ class Post(db.Model, SerializerMixin):
     comments = db.relationship("Comment", backref="post", cascade="all, delete-orphan")
     likes = db.relationship("Like", backref="post", cascade="all, delete-orphan")
 
-    serialize_rules = ("-comments.post", "-likes.post",)
+    serialize_rules = ("-comments.post", "-likes.post")
     
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -29,7 +29,7 @@ class User(db.Model, SerializerMixin):
     comments = db.relationship("Comment", backref="user", cascade="all, delete-orphan")
     likes = db.relationship("Like", backref="user", cascade="all, delete-orphan")
 
-    serialize_rules = ("-comments.user", "-likes.user",)
+    serialize_rules = ("-comments.user", "-likes.user")
 
     @hybrid_property
     def password_hash(self):
@@ -56,7 +56,7 @@ class Comment(db.Model, SerializerMixin):
     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
-    serialize_rules = ("-post.comments", "-user.comments",)
+    serialize_rules = ("-post.comments", "-user.comments", "-user.likes", "-post.likes")
 
 class Like(db.Model, SerializerMixin):
     __tablename__ = "likes"
@@ -66,5 +66,4 @@ class Like(db.Model, SerializerMixin):
     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
-    serialize_rules = ("-post.comments", "-post.likes",)
-    
+    serialize_rules = ("-post.likes", "-user.likes", "-user.comments", "-post.comments")
