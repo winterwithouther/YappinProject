@@ -42,7 +42,7 @@ class PostsById(Resource):
         if post is None:
             return make_response({"error" : "Post does not exist"}, 404)
         
-        return make_response(post.to_dict(rules=("-comments", "-likes",)), 200)
+        return make_response(post.to_dict(), 200)
 
     def patch(self, id):
         try:
@@ -100,7 +100,7 @@ class UsersById(Resource):
         user = User.query.filter_by(id = id).one_or_none()        
         if user is None:
             return make_response({"error" : "User does not exist"}, 404)
-        return make_response(user.to_dict(rules=("-comments", "-likes",)), 200)
+        return make_response(user.to_dict(), 200)
 
     def patch(self, id):
         try:
@@ -225,6 +225,10 @@ class LikesById(Resource):
 api.add_resource(LikesById, "/likes/<int:id>")
 
 class UserPosts(Resource):
+    def get(self):
+        userPosts = [userPost.to_dict() for userPost in UserPost.query.all()]
+        return make_response(userPosts, 200)
+
     def post(self):
         try:
             request_json = request.get_json()

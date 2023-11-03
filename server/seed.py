@@ -17,6 +17,7 @@ if __name__ == '__main__':
         Post.query.delete()
         Comment.query.delete()
         Like.query.delete()
+        UserPost.query.delete()
 
         print("Starting seed...")
 

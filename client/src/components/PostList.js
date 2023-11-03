@@ -1,7 +1,7 @@
 import React from "react"
 import PostCard from "./PostCard"
 
-function PostList({posts, user}) {
+function PostList({posts, user, removePost}) {
 
     const postsDisplay = posts.map((post) => {
         return <PostCard
@@ -12,6 +12,8 @@ function PostList({posts, user}) {
             user={user}
             id={post.id}
             likes={post.likes}
+            userPosts={post.userposts}
+            removePost={removePost}
         />
     })
 

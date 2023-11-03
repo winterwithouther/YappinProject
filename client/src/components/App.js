@@ -12,6 +12,8 @@ function App() {
   
   const [user, setUser] = useState(null);
 
+  const [posts, setPosts] = useState([])
+  
   useEffect(() => {
     // auto-login
     fetch("/checksession")
@@ -20,20 +22,37 @@ function App() {
         r.json().then((user) => setUser(user))
       }
     })
+    fetch("/posts")
+    .then(response => response.json())
+    .then(data => {
+        setPosts(data)
+    })
   }, [])
+
+  function addPost(data) {
+    setPosts([...posts, data])
+  }
+
+  function removePost(id) {
+    const newPosts = posts.filter(post => {
+      return post.id !== id
+    })
+    setPosts(newPosts)
+  }
 
   function onLogin(newUser) {
     setUser(newUser)
   }
 
-  console.log(user)
+  console.log("---------- POSTS -----------")
+  console.log(posts)
 
   return <div>
     <Router>
-      <Header onLogin={onLogin}/>
+      <Header onLogin={onLogin} user={user}/>
       <Switch>
         <Route exact path="/">
-          <Home user={user}/>
+          <Home user={user} posts={posts} removePost={removePost}/>
         </Route>
         <Route exact path="/login">
           <Login onLogin={onLogin}/>
@@ -42,10 +61,10 @@ function App() {
           <Signup onLogin={onLogin}/>
         </Route>
         <Route exact path="/profile">
-          <Profile/>
+          <Profile user={user} onLogin={onLogin}/>
         </Route>
         <Route exact path="/form">
-          <PostForm/>
+          <PostForm addPost={addPost} user={user} onLogin={onLogin}/>
         </Route>
         <Route exact path="/messages">
           <Messages/>

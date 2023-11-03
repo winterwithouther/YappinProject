@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react"
 import CommentCard from "./CommentCard"
 
-function PostCard({caption, content, comments, user, id, likes}) {
+function PostCard({caption, content, comments, user, id, likes, userPosts, removePost}) {
     const [like, setLike] = useState(false)
     const [likeObj, setLikeObj] = useState({})
     const [totalLikes, setTotalLikes] = useState(0)
+
     const [comments2, setComments] = useState([])
     const [commenting, setCommenting] = useState(false)
     const [createComment, setCreateComment] = useState("")
+
+    const [editPost, setEditPost] = useState(false)
+    const [editCaption, setEditCaption] = useState("")
 
     function commentRemoved(id) {
         const newComments = comments2.filter((comment) => {
@@ -49,6 +53,7 @@ function PostCard({caption, content, comments, user, id, likes}) {
         })
         setTotalLikes(Object.keys(likes).length)
         setComments(comments)
+        setEditCaption(caption)
     }, [])
 
     function handleLike() {
@@ -70,7 +75,6 @@ function PostCard({caption, content, comments, user, id, likes}) {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 setLikeObj(data)
                 setLike(true)
                 setTotalLikes(prevTotalLikes => prevTotalLikes + 1)
@@ -94,7 +98,6 @@ function PostCard({caption, content, comments, user, id, likes}) {
             setComments([...comments2, data])
             setCreateComment("")
             setCommenting(false)
-            console.log(comments2)
         })
     }
 
@@ -106,12 +109,58 @@ function PostCard({caption, content, comments, user, id, likes}) {
         setCommenting(true)
     }
 
+    function handleClickEditPost() {
+        setEditPost(true)
+    }
+
+    function handleChangeCaption(e) {
+        setEditCaption(e.target.value)
+        console.log(editCaption)
+    }
+
+    function handleSubmitCaption(e) {
+        e.preventDefault()
+
+        fetch(`/posts/${id}`, {
+            method : "PATCH",
+            headers : {"Content-Type" : "application/json"},
+            body : JSON.stringify({caption : editCaption})
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            setEditPost(false)
+        })
+    }
+
+    function handleClickDeletePost() {
+        fetch(`/posts/${id}`, {
+            method : "DELETE"
+        })
+        .then(response => response.json())
+        .then(() => {
+            removePost(id)
+        })
+    }
+
+    console.log(userPosts)
+    console.log(caption)
+
     return <div>
+        <div>
+            <img src={userPosts[0].user.image_url} alt="Profile Image"></img>
+            <h2>{userPosts[0].user.username}</h2>
+        </div>
         <img src={content}></img>
         <h2>Likes : {totalLikes}</h2>
         <button onClick={handleLike}>{like ? "Unlike" : "Like"}</button>
-        <h4>USERNAME : {caption}</h4>
-        {commenting ? 
+        {userPosts[0].user_id == user.id ? <button onClick={handleClickEditPost}>Edit</button> : ""}
+        {userPosts[0].user_id == user.id ? <button onClick={handleClickDeletePost}>Delete</button> : ""}
+        {editPost ? <form onSubmit={handleSubmitCaption}>
+            <input type="text" placeholder="caption" value={editCaption} onChange={handleChangeCaption}></input>
+            <input type="submit" value="confirm"></input>
+        </form> : <h3>{userPosts[0].user.username} : {editCaption}</h3>}
+        {commenting ?
         <form onSubmit={handleSubmitCreateComment}>
             <input placeholder="Comment..." name="create-comment" type="text" value={createComment} onChange={handleChangeCreateComment}></input>
             <input type="submit" value="comment"></input>

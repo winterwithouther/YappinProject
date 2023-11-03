@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
 
-function Header({onLogin}) {
+function Header({onLogin, user}) {
     const [isLoading, setIsLoading] = useState(false);
     function handleLogout() {
         setIsLoading(true)
@@ -13,6 +13,14 @@ function Header({onLogin}) {
             if (r.ok) {
                 onLogin(null)
             }
+        })
+    }
+
+    function handleClick() {
+        fetch(`/users/${user.id}`)
+        .then(response => response.json())
+        .then(userData => {
+            onLogin(userData)
         })
     }
     
@@ -32,7 +40,7 @@ function Header({onLogin}) {
         <Link to="/signup">
             Sign up
         </Link>
-        <Link to="/profile">
+        <Link to="/profile" onClick={handleClick}>
             Profile
         </Link>
         <button onClick={handleLogout}>

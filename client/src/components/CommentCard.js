@@ -20,7 +20,6 @@ function CommentCard({content, id, user, commentUser, commentRemoved, commentEdi
 
     function handleChangeEditComment(e) {
         setComment(e.target.value)
-        console.log(comment)
     }
 
     function handleSubmitEditComment(e) {
@@ -33,7 +32,6 @@ function CommentCard({content, id, user, commentUser, commentRemoved, commentEdi
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             commentEdited(id, data)
             setEditComment(false)
         })
