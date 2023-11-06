@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../context/Context";
 import { useHistory } from "react-router-dom";
 
-function Login({ onLogin }) {
+function Login({onLogin}) {
   const history = useHistory();
+  const user = useContext(UserContext)
 
   const initial = {
     username: "",
-    password: "",
-  };
+    password: ""
+  }
 
+  const [testUser, setTestUser] = useState(initial)
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState(initial);
   const [errors, setErrors] = useState({});
 
   function handleSubmit(e) {
@@ -18,10 +20,10 @@ function Login({ onLogin }) {
     setIsLoading(true);
 
     // Perform validation before submitting
-    if (user.username === '' || user.password === '') {
+    if (testUser.username === '' || testUser.password === '') {
       setErrors({
-        username: user.username === '' ? 'Username is required' : '',
-        password: user.password === '' ? 'Password is required' : '',
+        username: testUser.username === '' ? 'Username is required' : '',
+        password: testUser.password === '' ? 'Password is required' : '',
       });
       setIsLoading(false);
     } else {
@@ -30,14 +32,15 @@ function Login({ onLogin }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(user),
+        body: JSON.stringify(testUser),
       })
         .then((response) => {
           setIsLoading(false);
           if (response.ok) {
             response.json().then((user) => {
-              onLogin(user);
-              history.push("/");
+            //   onLogin(user);
+                onLogin(user)
+                history.push("/");
             });
           }
         });
@@ -47,7 +50,7 @@ function Login({ onLogin }) {
   function handleChange(e) {
     const { name, value } = e.target;
 
-    setUser({
+    setTestUser({
       ...user,
       [name]: value,
     });
@@ -68,7 +71,7 @@ function Login({ onLogin }) {
             type="text"
             name="username"
             autoComplete="off"
-            value={user.username}
+            value={testUser.username}
             onChange={handleChange}
           />
           <div style={{ color: 'red' }}>{errors.username}</div>
@@ -78,7 +81,7 @@ function Login({ onLogin }) {
           <input
             type="password"
             name="password"
-            value={user.password}
+            value={testUser.password}
             autoComplete="current-password"
             onChange={handleChange}
           />

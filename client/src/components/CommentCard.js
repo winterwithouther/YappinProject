@@ -1,9 +1,12 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
+import { UserContext } from "../context/Context"
 
-function CommentCard({content, id, user, commentUser, commentRemoved, commentEdited}) {
+function CommentCard({content, id, commentUser, commentRemoved, commentEdited}) {
+
     const [editComment, setEditComment] = useState(false)
     const [comment, setComment] = useState(content)
-
+    const user = useContext(UserContext)
+    
     function handleDeleteComment() {
         fetch(`/comments/${id}`, {
             method : "DELETE"

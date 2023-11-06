@@ -1,8 +1,10 @@
-import React, {useState} from "react"
+import React, {useState, useContext} from "react"
+import { UserContext } from "../context/Context"
 import { useHistory } from "react-router-dom"
 
-function PostForm({addPost, user, onLogin}) {
+function PostForm({addPost}) {
     const history = useHistory()
+    const user = useContext(UserContext)
 
     const initial = {content : "", caption : ""}
     const [formPost, setFormPost] = useState(initial)

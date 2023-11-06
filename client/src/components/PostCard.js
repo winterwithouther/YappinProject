@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import CommentCard from "./CommentCard"
+import { UserContext } from "../context/Context"
 
-function PostCard({caption, content, comments, user, id, likes, userPosts, removePost}) {
+function PostCard({caption, content, comments, id, likes, userPosts, removePost}) {
+    const user = useContext(UserContext)
     const [like, setLike] = useState(false)
     const [likeObj, setLikeObj] = useState({})
     const [totalLikes, setTotalLikes] = useState(0)

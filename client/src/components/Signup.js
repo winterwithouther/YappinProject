@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../context/Context";
 
 function Signup({ onLogin }) {
   const history = useHistory();
+  const user = useContext(UserContext)
 
   const initial = {
     username: "",
@@ -10,7 +12,7 @@ function Signup({ onLogin }) {
     email: "",
     passwordConfirmation: "",
   };
-  const [user, setUser] = useState(initial);
+  const [testUser, setTestUser] = useState(initial);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -19,20 +21,20 @@ function Signup({ onLogin }) {
     setIsLoading(true);
 
     // Validation
-    if (!user.username || !user.password || !user.email || user.password !== user.passwordConfirmation) {
+    if (!testUser.username || !testUser.password || !testUser.email || testUser.password !== testUser.passwordConfirmation) {
       setIsLoading(false);
       let errorsObj = {};
 
-      if (!user.username) {
+      if (!testUser.username) {
         errorsObj.username = "Username is required";
       }
-      if (!user.password) {
+      if (!testUser.password) {
         errorsObj.password = "Password is required";
       }
-      if (!user.email) {
+      if (!testUser.email) {
         errorsObj.email = "Email is required";
       }
-      if (user.password !== user.passwordConfirmation) {
+      if (testUser.password !== testUser.passwordConfirmation) {
         errorsObj.passwordConfirmation = "Passwords do not match";
       }
 
@@ -41,13 +43,13 @@ function Signup({ onLogin }) {
       fetch("/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
+        body: JSON.stringify(testUser),
       })
         .then((response) => {
           setIsLoading(false);
           if (response.ok) {
             response.json().then((userData) => {
-              onLogin(userData);
+              onLogin(userData)
               history.push("/");
             });
           }
@@ -58,8 +60,8 @@ function Signup({ onLogin }) {
   function handleChange(e) {
     const { name, value } = e.target;
 
-    setUser({
-      ...user,
+    setTestUser({
+      ...testUser,
       [name]: value,
     });
 
@@ -79,7 +81,7 @@ function Signup({ onLogin }) {
             type="text"
             name="username"
             autoComplete="off"
-            value={user.username}
+            value={testUser.username}
             placeholder="username"
             onChange={handleChange}
           />
@@ -91,7 +93,7 @@ function Signup({ onLogin }) {
             type="password"
             name="password"
             autoComplete="current-password"
-            value={user.password}
+            value={testUser.password}
             placeholder="password"
             onChange={handleChange}
           ></input>
@@ -102,7 +104,7 @@ function Signup({ onLogin }) {
           <input
             type="password"
             name="passwordConfirmation"
-            value={user.passwordConfirmation}
+            value={testUser.passwordConfirmation}
             onChange={handleChange}
             placeholder="password confirm"
             autoComplete="current-password"
@@ -114,7 +116,7 @@ function Signup({ onLogin }) {
           <input
             type="email"
             name="email"
-            value={user.email}
+            value={testUser.email}
             placeholder="email"
             onChange={handleChange}
           ></input>

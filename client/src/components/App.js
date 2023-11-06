@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import Home from "./Home"
 import Header from "./Header"
@@ -7,6 +7,7 @@ import Messages from "./Messages"
 import PostForm from "./PostForm";
 import Profile from "./Profile";
 import Signup from "./Signup";
+import { UserContext } from "../context/Context";
 
 function App() {
   
@@ -48,29 +49,31 @@ function App() {
   console.log(posts)
 
   return <div>
-    <Router>
-      <Header onLogin={onLogin} user={user}/>
-      <Switch>
-        <Route exact path="/">
-          <Home user={user} posts={posts} removePost={removePost}/>
-        </Route>
-        <Route exact path="/login">
-          <Login onLogin={onLogin}/>
-        </Route>
-        <Route exact path="/signup">
-          <Signup onLogin={onLogin}/>
-        </Route>
-        <Route exact path="/profile">
-          <Profile user={user} onLogin={onLogin}/>
-        </Route>
-        <Route exact path="/form">
-          <PostForm addPost={addPost} user={user} onLogin={onLogin}/>
-        </Route>
-        <Route exact path="/messages">
-          <Messages/>
-        </Route>
-      </Switch>
-    </Router>
+    <UserContext.Provider value={user}>
+      <Router>
+        <Header onLogin={onLogin} user={user}/>
+        <Switch>
+          <Route exact path="/">
+            <Home posts={posts} removePost={removePost}/>
+          </Route>
+          <Route exact path="/login">
+            <Login onLogin={onLogin}/>
+          </Route>
+          <Route exact path="/signup">
+            <Signup onLogin={onLogin}/>
+          </Route>
+          <Route exact path="/profile">
+            <Profile onLogin={onLogin} removePost={removePost}/>
+          </Route>
+          <Route exact path="/form">
+            <PostForm addPost={addPost} onLogin={onLogin}/>
+          </Route>
+          <Route exact path="/messages">
+            <Messages/>
+          </Route>
+        </Switch>
+      </Router>
+    </UserContext.Provider>
   </div>;
 }
 

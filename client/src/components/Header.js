@@ -1,7 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
+import { UserContext } from "../context/Context";
 import { Link } from "react-router-dom"
 
-function Header({onLogin, user}) {
+function Header({onLogin}) {
+    const user = useContext(UserContext)
     const [isLoading, setIsLoading] = useState(false);
     function handleLogout() {
         setIsLoading(true)

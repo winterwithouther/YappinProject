@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import PostCard from "./PostCard";
+import { UserContext } from "../context/Context";
 
-function Profile({ user, onLogin }) {
+function Profile({onLogin, removePost}) {
+    const user = useContext(UserContext)
   const [newUsername, setNewUsername] = useState("");
   const [isUsernameValid, setIsUsernameValid] = useState(true);
 
@@ -76,9 +78,6 @@ function Profile({ user, onLogin }) {
       <img src={user.image_url} alt="PROFILE PIC" />
       <h1>{user.username}</h1>
       <p>{user.bio}</p>
-      <div>
-        {/* Display user posts */}
-      </div>
       <div>
         <div>
             <form onSubmit={handleSubmitUsername}>
