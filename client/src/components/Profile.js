@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import PostCard from "./PostCard";
 import { UserContext } from "../context/Context";
+import "../css/Profile.css"
 
-function Profile({onLogin, removePost}) {
-    const user = useContext(UserContext)
+function Profile({removePost}) {
+    const {user, setUser} = useContext(UserContext)
+    const [settings, setSettings] = useState(false)
   const [newUsername, setNewUsername] = useState("");
   const [isUsernameValid, setIsUsernameValid] = useState(true);
 
@@ -30,7 +32,7 @@ function Profile({onLogin, removePost}) {
         } else {
             setIsUsernameValid(true)
             setNewUsername("")
-            onLogin(data)
+            setUser(data)
         }
     })
   }
@@ -50,7 +52,7 @@ function Profile({onLogin, removePost}) {
     .then(response => response.json())
     .then(data => {
         setNewProfilePic("")
-        onLogin(data)
+        setUser(data)
     })
   }
 
@@ -69,51 +71,58 @@ function Profile({onLogin, removePost}) {
     .then(response => response.json())
     .then(data => {
         setNewBio("")
-        onLogin(data)
+        setUser(data)
     })
   }
 
+  function handleClickSettings(e) {
+    setSettings(!settings)
+  }
+
   return (
-    <div>
-      <img src={user.image_url} alt="PROFILE PIC" />
+    <div className="profile-container">
+      <img src={user.image_url} alt="PROFILE PIC" className="profile-image"/>
       <h1>{user.username}</h1>
       <p>{user.bio}</p>
-      <div>
-        <div>
-            <form onSubmit={handleSubmitUsername}>
-            <input
-                type="text"
-                placeholder="Enter new username"
-                value={newUsername}
-                onChange={handleChangeUsername}
-            />
-            <button type="submit">Change username</button>
-            {!isUsernameValid && <p style={{ color: "red" }}>Username already exists!</p>}
-            </form>
-        </div>
-        <div>
-            <form onSubmit={handleSubmitProfile}>
+      <button onClick={handleClickSettings}>Settings</button>
+      {settings ? <div>
+        <div className="profile-section">
+            <div>
+                <form onSubmit={handleSubmitUsername}>
                 <input
                     type="text"
-                    placeholder="Enter new profile picture"
-                    value={newProfilePic}
-                    onChange={handleChangeProfile}
+                    placeholder="Enter new username"
+                    value={newUsername}
+                    onChange={handleChangeUsername}
                 />
-                <button type="submit">Change Profile Picture</button>
-            </form>
+                <button type="submit">Change username</button>
+                {!isUsernameValid && <p style={{ color: "red" }}>Username already exists!</p>}
+                </form>
+            </div>
+            <div>
+                <form onSubmit={handleSubmitProfile}>
+                    <input
+                        type="text"
+                        placeholder="Enter new profile picture"
+                        value={newProfilePic}
+                        onChange={handleChangeProfile}
+                    />
+                    <button type="submit">Change Profile Picture</button>
+                </form>
+            </div>
+            <div>
+                <form onSubmit={handleSubmitBio}>
+                    <input
+                        type="text"
+                        placeholder="New Bio"
+                        value={newBio}
+                        onChange={handleChangeBio}
+                    />
+                    <button type="submit">Change Bio</button>
+                </form>
+            </div>
         </div>
-        <div>
-            <form onSubmit={handleSubmitBio}>
-                <input
-                    type="text"
-                    placeholder="New Bio"
-                    value={newBio}
-                    onChange={handleChangeBio}
-                />
-                <button type="submit">Change Bio</button>
-            </form>
-        </div>
-      </div>
+      </div> : <></>}
     </div>
   );
 }

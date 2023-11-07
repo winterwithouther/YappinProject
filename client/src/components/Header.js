@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react"
 import { UserContext } from "../context/Context";
 import { Link } from "react-router-dom"
+import "../css/Header.css"
 
-function Header({onLogin}) {
-    const user = useContext(UserContext)
+function Header() {
+    const {user, setUser} = useContext(UserContext)
     const [isLoading, setIsLoading] = useState(false);
     function handleLogout() {
         setIsLoading(true)
@@ -13,7 +14,7 @@ function Header({onLogin}) {
         .then((r) => {
             setIsLoading(false)
             if (r.ok) {
-                onLogin(null)
+                setUser(null)
             }
         })
     }
@@ -22,32 +23,32 @@ function Header({onLogin}) {
         fetch(`/users/${user.id}`)
         .then(response => response.json())
         .then(userData => {
-            onLogin(userData)
+            setUser(userData)
         })
     }
     
-    return <div>
-        <Link to="/">
+    return <div className="header">
+        <Link id="home-link" className="link" to="/">
             Home
         </Link>
-        <Link to="/form">
+        {user ? <Link id="post-link" className="link" to="/form">
             Post
-        </Link>
-        <Link to="/messages">
+        </Link> : <></>}
+        {user ? <Link id="messages-link" className="link" to="/messages">
             Messages
-        </Link>
-        <Link to="/login">
+        </Link> : <></>}
+        {user ? <></> : <Link id="login-link" className="link" to="/login">
             Login
-        </Link>
-        <Link to="/signup">
+        </Link>}
+        {user ? <></> : <Link id="signup-link" className="link" to="/signup">
             Sign up
-        </Link>
-        <Link to="/profile" onClick={handleClick}>
+        </Link>}
+        {user ? <Link id="profile-link" className="link" to="/profile" onClick={handleClick}>
             Profile
-        </Link>
-        <button onClick={handleLogout}>
+        </Link> : <></>}
+        {user ? <button onClick={handleLogout}>
             {isLoading ? "Loading..." : "Logout"}
-        </button>
+        </button> : <></>}
     </div>
 }
 

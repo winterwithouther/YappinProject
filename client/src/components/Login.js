@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/Context";
 import { useHistory } from "react-router-dom";
+import "../css/Login.css"
 
-function Login({onLogin}) {
+function Login() {
   const history = useHistory();
-  const user = useContext(UserContext)
+  const {user, setUser} = useContext(UserContext)
 
   const initial = {
     username: "",
@@ -37,9 +38,9 @@ function Login({onLogin}) {
         .then((response) => {
           setIsLoading(false);
           if (response.ok) {
-            response.json().then((user) => {
+            response.json().then((userData) => {
             //   onLogin(user);
-                onLogin(user)
+                setUser(userData)
                 history.push("/");
             });
           }
@@ -51,7 +52,7 @@ function Login({onLogin}) {
     const { name, value } = e.target;
 
     setTestUser({
-      ...user,
+      ...testUser,
       [name]: value,
     });
 
@@ -63,27 +64,30 @@ function Login({onLogin}) {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h3>LOGIN</h3>
         <div>
           <label>Username</label>
-          <input
+          <input id="username-input"
             type="text"
             name="username"
             autoComplete="off"
             value={testUser.username}
             onChange={handleChange}
+            placeholder="Enter username"
           />
           <div style={{ color: 'red' }}>{errors.username}</div>
         </div>
         <div>
           <label>Password</label>
-          <input
+          <input id="password-input"
             type="password"
             name="password"
             value={testUser.password}
             autoComplete="current-password"
             onChange={handleChange}
+            placeholder="Enter password"
           />
           <div style={{ color: 'red' }}>{errors.password}</div>
         </div>

@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../context/Context";
+import "../css/Signup.css"
 
-function Signup({ onLogin }) {
+function Signup() {
   const history = useHistory();
-  const user = useContext(UserContext)
+  const {user, setUser} = useContext(UserContext)
 
   const initial = {
     username: "",
@@ -49,7 +50,7 @@ function Signup({ onLogin }) {
           setIsLoading(false);
           if (response.ok) {
             response.json().then((userData) => {
-              onLogin(userData)
+              setUser(userData)
               history.push("/");
             });
           }
@@ -73,8 +74,9 @@ function Signup({ onLogin }) {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="signup-container">
+      <form className="signup-form" onSubmit={handleSubmit}>
+        <h3>SIGNUP</h3>
         <div>
           <label>Username</label>
           <input

@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useContext } from "react"
 import CommentCard from "./CommentCard"
 import { UserContext } from "../context/Context"
+import "../css/PostCard.css"
 
 function PostCard({caption, content, comments, id, likes, userPosts, removePost}) {
-    const user = useContext(UserContext)
+    const {user, setUser} = useContext(UserContext)
     const [like, setLike] = useState(false)
     const [likeObj, setLikeObj] = useState({})
     const [totalLikes, setTotalLikes] = useState(0)
@@ -148,20 +149,20 @@ function PostCard({caption, content, comments, id, likes, userPosts, removePost}
     console.log(userPosts)
     console.log(caption)
 
-    return <div>
-        <div>
-            <img src={userPosts[0].user.image_url} alt="Profile Image"></img>
+    return <div className="post-card-container">
+        <div className="username-image-container">
+            <img className="profile-image" src={userPosts[0].user.image_url} alt="Profile Image"></img>
             <h2>{userPosts[0].user.username}</h2>
         </div>
-        <img src={content}></img>
-        <h2>Likes : {totalLikes}</h2>
+        <img className="post-image" src={content}></img>
+        <h2>{totalLikes} Likes</h2>
         <button onClick={handleLike}>{like ? "Unlike" : "Like"}</button>
         {userPosts[0].user_id == user.id ? <button onClick={handleClickEditPost}>Edit</button> : ""}
         {userPosts[0].user_id == user.id ? <button onClick={handleClickDeletePost}>Delete</button> : ""}
         {editPost ? <form onSubmit={handleSubmitCaption}>
             <input type="text" placeholder="caption" value={editCaption} onChange={handleChangeCaption}></input>
             <input type="submit" value="confirm"></input>
-        </form> : <h3>{userPosts[0].user.username} : {editCaption}</h3>}
+        </form> : <h3 className="caption">{userPosts[0].user.username} : {editCaption}</h3>}
         {commenting ?
         <form onSubmit={handleSubmitCreateComment}>
             <input placeholder="Comment..." name="create-comment" type="text" value={createComment} onChange={handleChangeCreateComment}></input>

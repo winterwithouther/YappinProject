@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react"
 import { UserContext } from "../context/Context"
+import "../css/Comment.css"
 
 function CommentCard({content, id, commentUser, commentRemoved, commentEdited}) {
 
     const [editComment, setEditComment] = useState(false)
     const [comment, setComment] = useState(content)
-    const user = useContext(UserContext)
+    const {user} = useContext(UserContext)
     
     function handleDeleteComment() {
         fetch(`/comments/${id}`, {
@@ -45,7 +46,7 @@ function CommentCard({content, id, commentUser, commentRemoved, commentEdited}) 
     }
 
     if (editComment) {
-        return <div>
+        return <div className="comment-card">
             <form onSubmit={handleSubmitEditComment}>
                 <input type="text" name="comment" value={comment} onChange={handleChangeEditComment}></input>
                 <input type="submit" value="submit"></input>
@@ -54,12 +55,12 @@ function CommentCard({content, id, commentUser, commentRemoved, commentEdited}) 
         </div>
     }
 
-    return <div>
+    return <div className="comment-card">
         <h5>{commentUser.username} : {content}</h5>
         {user.id == commentUser.id ? 
-        <div>
-        <button onClick={handleEditComment}>Edit</button>
-        <button onClick={handleDeleteComment}>Delete</button>
+        <div className="button-group">
+            <button onClick={handleEditComment}>Edit</button>
+            <button onClick={handleDeleteComment}>Delete</button>
         </div> : ""}
     </div>
 }

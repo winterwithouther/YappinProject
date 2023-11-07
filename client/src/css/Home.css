@@ -1,0 +1,101 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 40px;
+    font-size: 20px;
+}
+
+@keyframes yappinAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 50px;
+    text-align: center;
+    animation: yappinAnimation 3s;
+}
+
+.header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 20px;
+}
+
+.header h2 {
+    margin: 10px 0;
+}
+
+.about {
+    margin: 20px 0;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.about h3 {
+    color: #3498db;
+}
+
+.about p {
+    color: #666;
+}
+
+.post-list {
+    margin-top: 20px;
+}
+
+.post {
+    background: #f9f9f9;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.post h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.post p {
+    color: #555;
+}
+
+.connect-section {
+    background-image: url('https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png'); /* Replace 'path/to/your/image.jpg' with the actual path of your image */
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    padding: 100px 0;
+    color: #fff; 
+    width: 100vw;
+    height: 130px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+}
+
+.connect-section h2, .connect-section h3 {
+    margin: 10px 0;
+}
+
+.connect-section h2,
+.connect-section h3 {
+    transition: all 0.3s ease;
+}
+
+.connect-section h2:hover,
+.connect-section h3:hover {
+    transform: scale(1.1);
+    color: #00426e;
+}

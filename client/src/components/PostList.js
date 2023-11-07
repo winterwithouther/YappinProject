@@ -3,7 +3,7 @@ import { UserContext } from "../context/Context"
 import PostCard from "./PostCard"
 
 function PostList({posts, removePost}) {
-    const user = useContext(UserContext)
+    const {user, setUser} = useContext(UserContext)
 
     const postsDisplay = posts.map((post) => {
         return <PostCard

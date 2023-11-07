@@ -12,6 +12,9 @@ import { UserContext } from "../context/Context";
 function App() {
   
   const [user, setUser] = useState(null);
+  const values = {
+    user, setUser
+  }
 
   const [posts, setPosts] = useState([])
   
@@ -48,25 +51,25 @@ function App() {
   console.log("---------- POSTS -----------")
   console.log(posts)
 
-  return <div>
-    <UserContext.Provider value={user}>
+  return <div className="content">
+    <UserContext.Provider value={values}>
       <Router>
-        <Header onLogin={onLogin} user={user}/>
+        <Header user={user}/>
         <Switch>
           <Route exact path="/">
             <Home posts={posts} removePost={removePost}/>
           </Route>
           <Route exact path="/login">
-            <Login onLogin={onLogin}/>
+            <Login />
           </Route>
           <Route exact path="/signup">
-            <Signup onLogin={onLogin}/>
+            <Signup />
           </Route>
           <Route exact path="/profile">
-            <Profile onLogin={onLogin} removePost={removePost}/>
+            <Profile removePost={removePost}/>
           </Route>
           <Route exact path="/form">
-            <PostForm addPost={addPost} onLogin={onLogin}/>
+            <PostForm addPost={addPost}/>
           </Route>
           <Route exact path="/messages">
             <Messages/>

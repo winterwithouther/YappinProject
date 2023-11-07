@@ -1,10 +1,11 @@
 import React, {useState, useContext} from "react"
 import { UserContext } from "../context/Context"
 import { useHistory } from "react-router-dom"
+import "../css/PostForm.css"
 
 function PostForm({addPost}) {
     const history = useHistory()
-    const user = useContext(UserContext)
+    const {user, setUser} = useContext(UserContext)
 
     const initial = {content : "", caption : ""}
     const [formPost, setFormPost] = useState(initial)
@@ -47,12 +48,13 @@ function PostForm({addPost}) {
         })
     }
     
-    return <div>
-        <form onSubmit={handleSubmit}>
+    return <div className="form-container">
+        <form onSubmit={handleSubmit} className="form">
+            <h3>POST</h3>
             <label>Image</label>
-            <input type="text" name="content" value={formPost.content} placeholder="image..." onChange={handleChange}></input>
+            <input id="image-input" type="text" name="content" value={formPost.content} placeholder="image..." onChange={handleChange}></input>
             <label>Caption</label>
-            <input type="text" name="caption" value={formPost.caption} placeholder="caption..." onChange={handleChange}></input>
+            <input id="caption-input" type="text" name="caption" value={formPost.caption} placeholder="caption..." onChange={handleChange}></input>
             <input type="submit" value="post"></input>
         </form>
     </div>
