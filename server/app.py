@@ -290,7 +290,7 @@ class Signup(Resource):
 
         user = User(
             username = username,
-            image_url = None,
+            image_url = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg",
             email = email,
             bio=None
         )
