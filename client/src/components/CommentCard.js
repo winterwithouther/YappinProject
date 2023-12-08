@@ -57,7 +57,7 @@ function CommentCard({content, id, commentUser, commentRemoved, commentEdited}) 
 
     return <div className="comment-card">
         <h5>{commentUser.username} : {content}</h5>
-        {user.id == commentUser.id ? 
+        {user.id === commentUser.id ? 
         <div className="button-group">
             <button onClick={handleEditComment}>Edit</button>
             <button onClick={handleDeleteComment}>Delete</button>

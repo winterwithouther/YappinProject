@@ -154,7 +154,7 @@ function PostCard({caption, content, comments, id, likes, userPosts, removePost}
             <img className="profile-image" src={userPosts[0].user.image_url} alt="Profile Image"></img>
             <h2>{userPosts[0].user.username}</h2>
         </div>
-        <img className="post-image" src={content}></img>
+        <img className="post-image" src={content} alt="image"></img>
         <h2>{totalLikes} Likes</h2>
         <button onClick={handleLike}>{like ? "Unlike" : "Like"}</button>
         {userPosts[0].user_id == user.id ? <button onClick={handleClickEditPost}>Edit</button> : ""}
