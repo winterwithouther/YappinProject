@@ -48,7 +48,7 @@ function PostCard({caption, content, comments, id, likes, userPosts, removePost}
     })
 
     useEffect(() => {
-        likes.map(like => {
+        likes.forEach(like => {
             if (like.user_id === user.id) {
                 setLikeObj(like)
                 setLike(true)
@@ -157,8 +157,8 @@ function PostCard({caption, content, comments, id, likes, userPosts, removePost}
         <img className="post-image" src={content} alt="image"></img>
         <h2>{totalLikes} Likes</h2>
         <button onClick={handleLike}>{like ? "Unlike" : "Like"}</button>
-        {userPosts[0].user_id == user.id ? <button onClick={handleClickEditPost}>Edit</button> : ""}
-        {userPosts[0].user_id == user.id ? <button onClick={handleClickDeletePost}>Delete</button> : ""}
+        {userPosts[0].user_id === user.id ? <button onClick={handleClickEditPost}>Edit</button> : ""}
+        {userPosts[0].user_id === user.id ? <button onClick={handleClickDeletePost}>Delete</button> : ""}
         {editPost ? <form onSubmit={handleSubmitCaption}>
             <input type="text" placeholder="caption" value={editCaption} onChange={handleChangeCaption}></input>
             <input type="submit" value="confirm"></input>
