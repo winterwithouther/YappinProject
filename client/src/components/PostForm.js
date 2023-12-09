@@ -5,7 +5,7 @@ import "../css/PostForm.css"
 
 function PostForm({addPost}) {
     const history = useHistory()
-    const {user, setUser} = useContext(UserContext)
+    const {user} = useContext(UserContext)
 
     const initial = {content : "", caption : ""}
     const [formPost, setFormPost] = useState(initial)

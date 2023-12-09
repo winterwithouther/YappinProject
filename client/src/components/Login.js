@@ -5,7 +5,7 @@ import "../css/Login.css"
 
 function Login() {
   const history = useHistory();
-  const {user, setUser} = useContext(UserContext)
+  const {setUser} = useContext(UserContext)
 
   const initial = {
     username: "",

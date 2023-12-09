@@ -5,7 +5,7 @@ import "../css/Signup.css"
 
 function Signup() {
   const history = useHistory();
-  const {user, setUser} = useContext(UserContext)
+  const {setUser} = useContext(UserContext)
 
   const initial = {
     username: "",

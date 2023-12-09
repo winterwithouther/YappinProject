@@ -1,4 +1,4 @@
-import React, {useContext} from "react"
+
 import PostCard from "./PostCard"
 
 function PostList({posts, removePost}) {
