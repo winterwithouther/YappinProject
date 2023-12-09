@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
-import PostCard from "./PostCard";
+import React, { useState, useContext } from "react";
 import { UserContext } from "../context/Context";
 import "../css/Profile.css"
 

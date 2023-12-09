@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import Home from "./Home"
 import Header from "./Header"
@@ -42,10 +42,6 @@ function App() {
       return post.id !== id
     })
     setPosts(newPosts)
-  }
-
-  function onLogin(newUser) {
-    setUser(newUser)
   }
 
   console.log("---------- POSTS -----------")

@@ -1,9 +1,7 @@
 import React, {useContext} from "react"
-import { UserContext } from "../context/Context"
 import PostCard from "./PostCard"
 
 function PostList({posts, removePost}) {
-    const {user, setUser} = useContext(UserContext)
 
     const postsDisplay = posts.map((post) => {
         return <PostCard

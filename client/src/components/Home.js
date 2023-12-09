@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useContext } from "react"
+import React, { useContext } from "react"
 import { UserContext } from "../context/Context"
-import { useHistory } from "react-router-dom"
 import PostList from "./PostList"
 import "../css/Home.css"
 
 function Home({posts, removePost}) {
-    const history = useHistory()
     const {user} = useContext(UserContext)
 
     if (user) {
