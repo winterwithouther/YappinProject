@@ -57,7 +57,7 @@ function PostCard({caption, content, comments, id, likes, userPosts, removePost}
         setTotalLikes(Object.keys(likes).length)
         setComments(comments)
         setEditCaption(caption)
-    }, [])
+    }, [caption, comments, likes, user.id])
 
     function handleLike() {
         if (like) {
