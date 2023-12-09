@@ -4,7 +4,6 @@ import { UserContext } from "../context/Context"
 import "../css/PostCard.css"
 
 function PostCard({caption, content, comments, id, likes, userPosts, removePost}) {
-    const {user, setUser} = useContext(UserContext)
     const [like, setLike] = useState(false)
     const [likeObj, setLikeObj] = useState({})
     const [totalLikes, setTotalLikes] = useState(0)
@@ -151,10 +150,10 @@ function PostCard({caption, content, comments, id, likes, userPosts, removePost}
 
     return <div className="post-card-container">
         <div className="username-image-container">
-            <img className="profile-image" src={userPosts[0].user.image_url} alt="Profile Image"></img>
+            <img className="profile-image" src={userPosts[0].user.image_url} alt="Profile"></img>
             <h2>{userPosts[0].user.username}</h2>
         </div>
-        <img className="post-image" src={content} alt="image"></img>
+        <img className="post-image" src={content} alt="bruh"></img>
         <h2>{totalLikes} Likes</h2>
         <button onClick={handleLike}>{like ? "Unlike" : "Like"}</button>
         {userPosts[0].user_id === user.id ? <button onClick={handleClickEditPost}>Edit</button> : ""}
