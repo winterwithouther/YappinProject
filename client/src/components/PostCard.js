@@ -4,6 +4,7 @@ import { UserContext } from "../context/Context"
 import "../css/PostCard.css"
 
 function PostCard({caption, content, comments, id, likes, userPosts, removePost}) {
+    const {user, setUser} = useContext(UserContext)
     const [like, setLike] = useState(false)
     const [likeObj, setLikeObj] = useState({})
     const [totalLikes, setTotalLikes] = useState(0)
