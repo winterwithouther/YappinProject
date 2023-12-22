@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import Flask, request, make_response, abort, session, jsonify
+from flask import Flask, request, make_response, abort, session, jsonify, render_template
 from flask_restful import Resource
 
 # Local imports
@@ -13,6 +13,12 @@ from config import app, db, api
 from models import *
 
 app.secret_key = b'\x00q\x7fe\xe0\xafI5{\xa044Wdc\xd2'
+
+
+@app.route('/')
+@app.route("<int:id>")
+def index(id=0):
+    return render_template("index.html")
 
 class Posts(Resource):
     def get(self):
@@ -347,9 +353,6 @@ class Logout(Resource):
     
 api.add_resource(Logout, "/logout", endpoint="logout")
 
-@app.route('/')
-def index():
-    return '<h1>Project Server</h1>'
 
 
 if __name__ == '__main__':
